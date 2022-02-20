@@ -3,12 +3,12 @@ import pygame as pg
 import random as rd
 pg.init()
 
-class Bola:
-    def __init__(self, padre: pg.Surface, radio = rd.randint(5,30)):
-        self.x = rd.randrange(radio, padre.get_width()-radio)
-        self.y = rd.randrange(radio, padre.get_height()-radio)
+class Bola():
+    def __init__(self, padre: pg.Surface):
+        self.radio = rd.randint(10, 30) 
+        self.x = rd.randrange(self.radio, padre.get_width()-self.radio)
+        self.y = rd.randrange(self.radio, padre.get_height()-self.radio)
         self.color = (rd.randint(0, 255), rd.randint(0,255), rd.randint(0,255))
-        self.radio = radio  
         self.vx = rd.uniform(0.1, 0.5)
         self.vy = rd.uniform(0.1, 0.5)
         self.padre = padre
@@ -28,12 +28,18 @@ class Bola:
     def dibujar(self):
         pg.draw.circle(self.padre, self.color, (self.x, self.y), self.radio)
 
-class Game:
+class Game():
+    bolas = []
+    __color = (rd.randint(0, 255), rd.randint(0,255), rd.randint(0,255))
+   
     def __init__(self, ancho=400, alto=600):
         self.pantalla = pg.display.set_mode((ancho, alto))
-        self.bola = Bola(self.pantalla)
-        self.bolas = Bola(self.pantalla)
-     
+        pg.display.set_caption("Bolas al azar")
+                     
+        for i in range(4):
+            self.LaBola = Bola(self.pantalla, self.__color[i])
+            self.bolas.append(self.LaBola)
+        
     def bucle_ppal(self):
         game_over = False
 
@@ -43,14 +49,14 @@ class Game:
             for evento in eventos:
                 if evento.type == pg.QUIT:
                     game_over = True
-
-            self.bola.mover()
-            self.bolas.mover()       
-            self.pantalla.fill((255,0,0))
-            self.bola.dibujar()
-            self.bolas.dibujar()
-
-            pg.draw.circle(self.pantalla, self.bola.color, (self.bola.x, self.bola.y), self.bola.radio)
+            
+            for i in self.bolas:
+                self.LaBola.mover()
+                self.pantalla.fill((245,245,220))
+                self.LaBola.dibujar()
+            
+            for i in self.bolas:
+                pg.draw.circle(self.pantalla, self.bola.color, (self.bola.x, self.bola.y), self.bola.radio)
             
             pg.display.flip()
 

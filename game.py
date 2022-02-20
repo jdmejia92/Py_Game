@@ -4,9 +4,9 @@ import random as rd
 pg.init()
 
 class Bola:
-    def __init__(self, padre: pg.Surface, color = (255,255,255), radio = rd.randint(10, 100)):
-        self.x = rd.randrange(radio, padre.get_width()-radio)
-        self.y = rd.randrange(radio, padre.get_height()-radio)
+    def __init__(self, padre: pg.Surface, x, y, color = (255,255,255), radio = 10):
+        self.x = x
+        self.y = y
         self.color = color
         self.radio = radio
         self.vx = 0.2
