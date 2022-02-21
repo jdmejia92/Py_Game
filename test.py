@@ -1,20 +1,21 @@
 from pickle import TRUE
+from re import X
 import pygame as pg
 import random as rd
 pg.init()
 
 class Bola():
-    def __init__(self, padre: pg.Surface):
-        self.radio = rd.randint(10, 30) 
-        self.x = rd.randrange(self.radio, padre.get_width()-self.radio)
-        self.y = rd.randrange(self.radio, padre.get_height()-self.radio)
-        self.color = (rd.randint(0, 255), rd.randint(0,255), rd.randint(0,255))
-        self.vx = rd.uniform(0.1, 0.5)
-        self.vy = rd.uniform(0.1, 0.5)
+    def __init__(self, x, y, padre,  color = (255, 255, 255), radio = 10):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.radio = radio
+        self.vx = 0.1
+        self.vy = 0.1
         self.padre = padre
 
     def mover(self):
-        self.x += self.vx
+        self.x += self.vx 
         self.y += self.vy
 
         if self.x <= self.radio or self.x >= self.padre.get_width() - self.radio:
@@ -29,17 +30,25 @@ class Bola():
         pg.draw.circle(self.padre, self.color, (self.x, self.y), self.radio)
 
 class Game():
-    bolas = []
-    __color = (rd.randint(0, 255), rd.randint(0,255), rd.randint(0,255))
-   
+    
     def __init__(self, ancho=400, alto=600):
         self.pantalla = pg.display.set_mode((ancho, alto))
         pg.display.set_caption("Bolas al azar")
-                     
-        for i in range(4):
-            self.LaBola = Bola(self.pantalla, self.__color[i])
-            self.bolas.append(self.LaBola)
+        self.bola = Bola(ancho // 2, ancho // 2, self.pantalla)
+        self.bola1 = Bola(320, 520, self.pantalla, radio=60)
+        self.bolas = []
+        aleatorio_color = (rd.randrange(0, 257), rd.randrange(0, 257), rd.randrange(0, 257))
+        aleatorio_radio = rd.randint(10, 50)
+        aleatorio_x = rd.randint(aleatorio_radio, ancho - aleatorio_radio)
+        aleatorio_y = rd.randint(aleatorio_radio, alto - aleatorio_radio)
         
+        for _ in range(rd.randrange(10, 20)):
+            nueva_bola = Bola(aleatorio_x, aleatorio_y, self.pantalla, aleatorio_color, aleatorio_radio)
+            self.bolas.append(nueva_bola)
+
+        self.bola1.vx = 1
+        self.bola1.vy = 1
+                            
     def bucle_ppal(self):
         game_over = False
 
@@ -50,13 +59,14 @@ class Game():
                 if evento.type == pg.QUIT:
                     game_over = True
             
-            for i in self.bolas:
-                self.LaBola.mover()
-                self.pantalla.fill((245,245,220))
-                self.LaBola.dibujar()
-            
-            for i in self.bolas:
-                pg.draw.circle(self.pantalla, self.bola.color, (self.bola.x, self.bola.y), self.bola.radio)
+            '''for bola in self.bolas:
+                bola.Bola.mover()'''
+            #self.bola.mover()
+            #self.bola1.mover()
+            self.pantalla.fill((255, 0, 0))    
+            #dibujar todas las bolas
+            #self.bola.dibujar()
+            #self.bola1.dibujar()
             
             pg.display.flip()
 
