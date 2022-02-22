@@ -6,21 +6,15 @@ pg.init()
 
 
 class Bola():
-    def __init__(self, padre, x, y, cantidad, color = (255, 255, 255), radio = 10):
+    def __init__(self, padre, x, y, color = (255, 255, 255), radio = 10):
         self.padre = padre
         self.x = x
         self.y = y
-        self.cantidad = cantidad
         self.color = color
         self.radio = radio
         self.vx = 0.1
         self.vy = 0.1
-
-        self.radio = rd.randint(10, 50)
-        self.x = rd.randint(self.radio, self.padre.get_width() - self.radio)
-        self.y = rd.randint(self.radio, self.padre.get_height() - self.radio)
-        self.color = (rd.randint(0, 255), rd.randint(0,255), rd.randint(0, 255))
-                
+           
     def mover(self):
         self.x += self.vx 
         self.y += self.vy
@@ -41,24 +35,22 @@ class Game():
     def __init__(self, ancho=400, alto=600):
         self.pantalla = pg.display.set_mode((ancho, alto))
         pg.display.set_caption("Bolas al azar")
-        self.bola = Bola(self.pantalla, ancho // 2, ancho // 2, 0)
-        self.bola1 = Bola(self.pantalla, 320, 520, 0, radio=60)
+        '''self.bola = Bola(self.pantalla, ancho // 2, ancho // 2)
+        self.bola1 = Bola(self.pantalla, 320, 520, radio=60)'''
+        
         self.bolas = []
-        alt_radio = rd.randint(10, 50)
-        alt_x = rd.randrange(alt_radio, self.pantalla.get_width() - alt_radio)
-        alt_y = rd.randrange(alt_radio, self.pantalla.get_height() - alt_radio)
-        alt_color = (rd.randint(0, 255), rd.randint(0,255), rd.randint(0, 255))
-        cantidad_bolas = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)   
-
-        for i in range(rd.randrange(5, 10)):
-            nueva_bola = Bola(self.pantalla, alt_x, alt_y, cantidad_bolas[i], alt_color, alt_radio)
+        for i in range(rd.randrange(5, 20)):
+            alt_radio = rd.randint(10, 30)
+            nueva_bola = Bola(self.pantalla, rd.randrange(alt_radio, ancho - alt_radio),
+                                rd.randrange(alt_radio, alto - alt_radio),  
+                                (rd.randint(0, 255), rd.randint(0,255), rd.randint(0, 255)), alt_radio)
+            nueva_bola.vx = rd.uniform(0.1, 0.2)
+            nueva_bola.vy = rd.uniform(0.1, 0.2)
             self.bolas.append(nueva_bola)
 
-        self.bola1.vx = 0.1
-        self.bola1.vy = 0.1
+        '''self.bola1.vx = 0.1
+        self.bola1.vy = 0.1'''
 
-        #for velocidad
-                            
     def bucle_ppal(self):
         game_over = False
 
@@ -69,16 +61,17 @@ class Game():
                 if evento.type == pg.QUIT:
                     game_over = True
             
-            for avanzaBola in self.bolas:
-                avanzaBola.mover()
-            self.bola.mover()
-            self.bola1.mover()
-            self.pantalla.fill((189, 236, 182))    
+
+            self.pantalla.fill((255, 0, 0))
+
+            for nueva_bola in self.bolas:
+                nueva_bola.mover()
+                nueva_bola.dibujar()
+            '''self.bola.mover()
+            self.bola1.mover()''' 
             #dibujar todas las bolas
-            for dibujaBola in self.bolas:
-                dibujaBola.dibujar()
-            self.bola.dibujar()
-            self.bola1.dibujar()
+            '''self.bola.dibujar()
+            self.bola1.dibujar()'''
             
             pg.display.flip()
 
