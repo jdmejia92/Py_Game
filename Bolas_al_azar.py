@@ -47,8 +47,8 @@ class Game():
             nueva_bola = Bola(self.pantalla, rd.randrange(alt_radio, ancho - alt_radio),
                                 rd.randrange(alt_radio, alto - alt_radio),  
                                 (rd.randint(0, 255), rd.randint(0,255), rd.randint(0, 255)), alt_radio)
-            nueva_bola.vx = rd.uniform(-5, 5)
-            nueva_bola.vy = rd.uniform(-5, 5)
+            nueva_bola.vx = rd.uniform(-6, 6)
+            nueva_bola.vy = rd.uniform(-6, 6)
             self.bolas.append(nueva_bola)
 
         '''self.bola1.vx = 0.1
