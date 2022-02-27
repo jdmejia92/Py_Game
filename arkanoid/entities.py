@@ -26,14 +26,35 @@ class Vigneta:
         pass
 
     def intersecta(self, otro) -> bool:
-        return (self.x in range(otro.x, otro.x + otro.ancho) or \
-                self.x + self.ancho in range(otro.x, otro.x + otro.ancho)) and \
-               (self.y in range(otro.y, otro.y + otro.alto) or \
-                self.y + self.alto in range(otro.y, otro.y + otro.alto))
+
+        if self.ancho > otro.ancho:
+            menor_ancho = otro
+            mayor_ancho = self
+        else:
+            menor_ancho = self
+            mayor_ancho = otro
+
+        if self.alto > otro.alto:
+            menor_alto = otro
+            mayor_alto = self
+        else:
+            menor_alto = self
+            mayor_alto = otro
+        return (menor_ancho.x in range(mayor_ancho.x, mayor_ancho.x + mayor_ancho.ancho) or \
+                menor_ancho.x + menor_ancho.ancho in range(mayor_ancho.x, mayor_ancho.x + mayor_ancho.ancho)) and \
+               (menor_alto.y in range(mayor_alto.y, mayor_alto.y + mayor_alto.alto) or \
+                menor_alto.y + menor_alto.alto in range(mayor_alto.y, mayor_alto.y + mayor_alto.alto))
 
 class Ladrillo(Vigneta):
     def dibujar(self):
         pg.draw.rect(self.padre, self.color, (self.x, self.y, self.ancho, self.alto))
+
+    def comprobarToque(self, bola):
+        if self.intersecta(bola):
+            bola.vy *= -1
+            return True
+
+        return False
 
 class Raqueta(Vigneta):
     def __init__(self, padre, x, y, ancho, alto, color = (255, 255, 0)):
@@ -91,7 +112,4 @@ class Bola(Vigneta):
 
     def compruebaChoque(self, otro):
         if self.intersecta(otro):
-            self.vy *= -1
-            return True
-
-        return False
+           self.vy *= -1
