@@ -4,6 +4,7 @@ import pygame as pg
 import random as rd
 pg.init()
 
+FPS = 60
 
 class Bola():
     def __init__(self, padre, x, y, color = (255, 255, 255), radio = 10):
@@ -38,14 +39,16 @@ class Game():
         '''self.bola = Bola(self.pantalla, ancho // 2, ancho // 2)
         self.bola1 = Bola(self.pantalla, 320, 520, radio=60)'''
         
+        self.reloj = pg.time.Clock()
+        
         self.bolas = []
         for i in range(rd.randrange(5, 20)):
             alt_radio = rd.randint(10, 30)
             nueva_bola = Bola(self.pantalla, rd.randrange(alt_radio, ancho - alt_radio),
                                 rd.randrange(alt_radio, alto - alt_radio),  
                                 (rd.randint(0, 255), rd.randint(0,255), rd.randint(0, 255)), alt_radio)
-            nueva_bola.vx = rd.uniform(0.1, 0.2)
-            nueva_bola.vy = rd.uniform(0.1, 0.2)
+            nueva_bola.vx = rd.uniform(-5, 5)
+            nueva_bola.vy = rd.uniform(-5, 5)
             self.bolas.append(nueva_bola)
 
         '''self.bola1.vx = 0.1
@@ -55,6 +58,8 @@ class Game():
         game_over = False
 
         while not game_over:
+
+            self.reloj.tick(FPS)
 
             eventos = pg.event.get()
             for evento in eventos:
