@@ -6,8 +6,9 @@ pg.init()
 
 class Game:
     def __init__(self, ancho=600, alto=800):
-        
+
         pantalla = pg.display.set_mode((ancho, alto))
+        pg.display.set_caption("Arkanoid")
         self.escenas = [Partida(pantalla), GameOver(pantalla)]
 
     def lanzar(self):

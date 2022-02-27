@@ -1,4 +1,6 @@
 import pygame as pg
+import random as rd
+
 
 class Vigneta:
     def __init__(self, padre, x, y, ancho, alto, color = (255, 255, 255)):
@@ -40,10 +42,12 @@ class Vigneta:
         else:
             menor_alto = self
             mayor_alto = otro
+
         return (menor_ancho.x in range(mayor_ancho.x, mayor_ancho.x + mayor_ancho.ancho) or \
                 menor_ancho.x + menor_ancho.ancho in range(mayor_ancho.x, mayor_ancho.x + mayor_ancho.ancho)) and \
                (menor_alto.y in range(mayor_alto.y, mayor_alto.y + mayor_alto.alto) or \
                 menor_alto.y + menor_alto.alto in range(mayor_alto.y, mayor_alto.y + mayor_alto.alto))
+
 
 class Ladrillo(Vigneta):
     def dibujar(self):
@@ -80,8 +84,8 @@ class Bola(Vigneta):
     def __init__(self, padre, x, y, color = (255, 255, 255), radio = 10):
         super().__init__(padre, x - radio, y - radio, 2 * radio, 2 * radio, color)
         self.radio = radio
-        self.vx = 5
-        self.vy = 5
+        self.vx = 4
+        self.vy = 4
         self.x_ini = x
         self.y_ini = y
         self.esta_viva = True
@@ -89,12 +93,12 @@ class Bola(Vigneta):
     def reset(self):
         self.x = self.x_ini
         self.y = self.y_ini
-        self.vx = 5
-        self.vy = 5
+        self.vx = self.vx
+        self.vy = self.vy
         self.esta_viva = True
            
     def mover(self):
-        self.x += self.vx 
+        self.x += self.vx
         self.y += self.vy
 
         if self.x <= 0 or self.x >= self.padre.get_width() - self.ancho:

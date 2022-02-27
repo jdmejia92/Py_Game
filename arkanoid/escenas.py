@@ -1,4 +1,5 @@
 import pygame as pg
+import random as rd
 
 from arkanoid.entities import Bola, Raqueta, Ladrillo
 from arkanoid import niveles, FPS
@@ -15,7 +16,6 @@ class Escena:
 class Partida(Escena):
     def __init__(self, pantalla):
         super().__init__(pantalla)
-        pg.display.set_caption("Arkanoid")
         self.bola = Bola(self.pantalla, self.pantalla.get_width() // 2, 
                          self.pantalla.get_height() // 2)
         self.raqueta = Raqueta(self.pantalla, self.pantalla.get_width()//2, 
