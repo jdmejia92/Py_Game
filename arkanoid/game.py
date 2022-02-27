@@ -6,6 +6,7 @@ pg.init()
 
 class Game:
     def __init__(self, ancho=600, alto=800):
+        
         pantalla = pg.display.set_mode((ancho, alto))
         self.escenas = [Partida(pantalla), GameOver(pantalla)]
 

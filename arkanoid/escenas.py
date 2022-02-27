@@ -15,6 +15,7 @@ class Escena:
 class Partida(Escena):
     def __init__(self, pantalla):
         super().__init__(pantalla)
+        pg.display.set_caption("Arkanoid")
         self.bola = Bola(self.pantalla, self.pantalla.get_width() // 2, 
                          self.pantalla.get_height() // 2)
         self.raqueta = Raqueta(self.pantalla, self.pantalla.get_width()//2, 
@@ -103,8 +104,7 @@ class GameOver(Escena):
 
             self.pantalla.fill((30, 30, 255))
             texto = self.fuente.render("GAME OVER", True, (255, 255, 0))
-            print(texto.get_rect())
-
+            
             self.pantalla.blit(texto, (10, 10))
 
             pg.display.flip()
