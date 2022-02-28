@@ -9,8 +9,8 @@ class Escena:
         self.pantalla = pantalla
         self.reloj = pg.time.Clock()
 
-    def bucle_ppal():
-        pass
+    def bucle_ppal() -> bool:
+        return
 
 
 class Partida(Escena):
@@ -19,7 +19,9 @@ class Partida(Escena):
         self.bola = Bola(self.pantalla, self.pantalla.get_width() // 2, 
                          self.pantalla.get_height() // 2)
         self.raqueta = Raqueta(self.pantalla, self.pantalla.get_width()//2, 
-                         self.pantalla.get_height() - 30, 100, 20)
+                         self.pantalla.get_height() - 30)
+        self.fuente = pg.font.Font("resources/fonts/FredokaOne-Regular.ttf", 15)
+        self.fondo = pg.image.load("resources/images/background.jpg")
         self.ladrillos = []
         self.todos = []
         self.reset()
@@ -35,7 +37,7 @@ class Partida(Escena):
 
     def crea_ladrillos(self, nivel):
         for col, fil in niveles[nivel]:
-            l = Ladrillo(self.pantalla, 5 + 60 * col, 25 + 30 * fil, 50, 20)
+            l = Ladrillo(self.pantalla, 5 + 60 * col, 100 + 30 * fil, 50, 20)
             self.ladrillos.append(l)
         
         self.todos = self.todos + self.ladrillos
@@ -60,7 +62,7 @@ class Partida(Escena):
                     if evento.type == pg.QUIT:
                         return False
               
-                self.pantalla.fill((255, 0, 0))    
+                self.pantalla.blit(self.fondo, (0, 0))   
 
                 for objeto in self.todos:
                     objeto.mover()
@@ -70,7 +72,7 @@ class Partida(Escena):
                 if not self.bola.esta_viva:
                     self.contador_vidas -= 1
                     self.bola.reset()
-        
+                            
                 for ladrillo in self.ladrillos:
                     if ladrillo.comprobarToque(self.bola):
                         self.ladrillos.remove(ladrillo)
@@ -80,6 +82,12 @@ class Partida(Escena):
                 for objeto in self.todos:
                     objeto.dibujar()
 
+                texto_contador = self.fuente.render('Contador de vidas: ' + str(self.contador_vidas), True, (255, 255, 255))
+                texto_niveles = self.fuente.render('Nivel: ' + str(nivel + 1), True, (255, 255, 255))
+            
+                self.pantalla.blit(texto_contador, (self.pantalla.get_width() - 160, 10))
+                self.pantalla.blit(texto_niveles, (self.pantalla.get_width() - 160, 30))
+                
                 pg.display.flip()
 
             nivel += 1
@@ -90,7 +98,7 @@ class Partida(Escena):
 class GameOver(Escena):
     def __init__(self, pantalla):
         super().__init__(pantalla)
-        self.fuente = pg.font.Font("resources/fonts/FredokaOne-Regular.ttf", 25)
+        self.fuente = pg.font.Font("resources/fonts/FredokaOne-Regular.ttf", 60)
 
     def bucle_ppal(self):
         while True:
@@ -102,9 +110,11 @@ class GameOver(Escena):
                     if evento.key == pg.K_SPACE:
                         return True
 
-            self.pantalla.fill((30, 30, 255))
-            texto = self.fuente.render("GAME OVER", True, (255, 255, 0))
+            self.pantalla.fill((173, 216, 230))
+            texto_final = self.fuente.render("GAME OVER", True, (255, 255, 255))
+            rectexto = texto_final.get_rect()
             
-            self.pantalla.blit(texto, (10, 10))
+            self.pantalla.blit(texto_final, ((self.pantalla.get_width() - rectexto.width)//2,
+                                             (self.pantalla.get_height() - rectexto.h)//2))
 
             pg.display.flip()

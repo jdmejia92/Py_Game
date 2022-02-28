@@ -9,7 +9,9 @@ class Game:
 
         pantalla = pg.display.set_mode((ancho, alto))
         pg.display.set_caption("Arkanoid")
-        self.escenas = [Partida(pantalla), GameOver(pantalla)]
+        partida = Partida(pantalla)
+        game_over = GameOver(pantalla)
+        self.escenas = [partida, game_over]
 
     def lanzar(self):
         escena_activa = 0

@@ -61,12 +61,14 @@ class Ladrillo(Vigneta):
         return False
 
 class Raqueta(Vigneta):
-    def __init__(self, padre, x, y, ancho, alto, color = (255, 255, 0)):
-        super().__init__(padre, x, y, ancho, alto, color)
+    def __init__(self, padre, x, y):
+        self.imagen = pg.image.load("resources/images/electric00.png")
+        self.rect = self.imagen.get_rect()
+        super().__init__(padre, x, y, self.rect.w, self.rect.h)
         self.vx = 5
 
     def dibujar(self):
-        pg.draw.rect(self.padre, self.color, (self.x, self.y, self.ancho, self.alto))
+        self.padre.blit(self.imagen, (self.x, self.y))
 
     def mover(self):
         teclas = pg.key.get_pressed()
@@ -93,8 +95,8 @@ class Bola(Vigneta):
     def reset(self):
         self.x = self.x_ini
         self.y = self.y_ini
-        self.vx = self.vx
-        self.vy = self.vy
+        self.vx = 4
+        self.vy = 4
         self.esta_viva = True
            
     def mover(self):
