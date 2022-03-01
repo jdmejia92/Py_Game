@@ -57,7 +57,7 @@ class Raqueta(Vigneta):
 
         self.image = self.images[self.imagen_activa]
         self.rect = self.image.get_rect(centerx = centrox, centery = centroy)
-        self.vx = 5
+        self.vx = 8
 
         
     def update(self):
