@@ -16,31 +16,31 @@ class Escena:
 class Partida(Escena):
     def __init__(self, pantalla):
         super().__init__(pantalla)
-        self.bola = Bola(self.pantalla, self.pantalla.get_width() // 2, 
-                         self.pantalla.get_height() // 2)
-        self.raqueta = Raqueta(self.pantalla, self.pantalla.get_width()//2, 
-                         self.pantalla.get_height() - 30)
+        self.bola = Bola(self.pantalla.get_width() // 2, 
+                         self.pantalla.get_height() // 2, self.pantalla)
+        self.raqueta = Raqueta(self.pantalla.get_width()//2, 
+                         self.pantalla.get_height() - 30, self.pantalla)
+                         
         self.fuente = pg.font.Font("resources/fonts/FredokaOne-Regular.ttf", 15)
         self.fondo = pg.image.load("resources/images/background.jpg")
-        self.ladrillos = []
-        self.todos = []
+        self.ladrillos = pg.sprite.Group()
+        self.todos = pg.sprite.Group()
         self.reset()
 
 
     def reset(self):
-        self.ladrillos = []
-        self.todos = []
-        self.todos.append(self.bola)
-        self.todos.append(self.raqueta)
+        self.ladrillos.empty()
+        self.todos.empty()
+        self.todos.add(self.bola, self.raqueta)
         self.contador_vidas = 3
 
 
     def crea_ladrillos(self, nivel):
         for col, fil in niveles[nivel]:
-            l = Ladrillo(self.pantalla, 5 + 60 * col, 100 + 30 * fil, 50, 20)
-            self.ladrillos.append(l)
+            l = Ladrillo(5 + 60 * col, 100 + 30 * fil, 50, 20)
+            self.ladrillos.add(l)
         
-        self.todos = self.todos + self.ladrillos
+        self.todos.add(self.ladrillos)
 
     def bucle_ppal(self) -> bool:
         nivel = 0
@@ -64,23 +64,19 @@ class Partida(Escena):
               
                 self.pantalla.blit(self.fondo, (0, 0))   
 
-                for objeto in self.todos:
-                    objeto.mover()
+                self.todos.update()
 
                 self.bola.compruebaChoque(self.raqueta)
-
                 if not self.bola.esta_viva:
                     self.contador_vidas -= 1
                     self.bola.reset()
-                            
+
                 for ladrillo in self.ladrillos:
                     if ladrillo.comprobarToque(self.bola):
                         self.ladrillos.remove(ladrillo)
                         self.todos.remove(ladrillo)
 
-
-                for objeto in self.todos:
-                    objeto.dibujar()
+                self.todos.draw(self.pantalla)
 
                 texto_contador = self.fuente.render('Contador de vidas: ' + str(self.contador_vidas), True, (255, 255, 255))
                 texto_niveles = self.fuente.render('Nivel: ' + str(nivel + 1), True, (255, 255, 255))
