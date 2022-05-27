@@ -25,7 +25,7 @@ class Vigneta(pg.sprite.Sprite):
 
         return (menor_ancho.rect.left in range(mayor_ancho.rect.left, mayor_ancho.rect.right) or \
                 menor_ancho.rect.right in range(mayor_ancho.rect.left, mayor_ancho.rect.right)) and \
-               (menor_alto.rect.top in range(mayor_alto.rect.top, mayor_alto.rect.bottom) or \
+                (menor_alto.rect.top in range(mayor_alto.rect.top, mayor_alto.rect.bottom) or \
                 menor_alto.rect.bottom in range(mayor_alto.rect.top, mayor_alto.rect.bottom))
 
 
@@ -65,11 +65,16 @@ class Raqueta(Vigneta):
         if self.contador_frames == self.frecuencia_cambio:
             self.imagen_activa += 1
             if self.imagen_activa >= len(self.images):
-               self.imagen_activa = 0
+                self.imagen_activa = 0
 
             self.contador_frames = 0
                 
             self.image = self.images[self.imagen_activa]
+
+        # Esto es lo mismo que arriba para animar la raqueta
+        """self.contador_frames += 1
+        if (self.contador_frames % self.frecuencia_cambio == 0
+            self.imagen_activa = (self.imagen_activa + 1) % len(self.images)"""
 
         teclas = pg.key.get_pressed()
         if teclas[pg.K_LEFT]:
@@ -81,12 +86,6 @@ class Raqueta(Vigneta):
             self.rect.x = 0
         if self.rect.right >= self.padre.get_width():
             self.rect.right = self.padre.get_width()
-
-        #self.contador_frames += 1
-        #if (self.contador_frames % self.frecuencia_cambio == 0
-        #     self.imagen_activa = (self.imagen_activa + 1) % len(self.images)
-
-        
 
 class Bola(Vigneta):
     def __init__(self, centrox, centroy, padre, radio =10, color = (255, 255, 255)):

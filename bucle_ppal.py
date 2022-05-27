@@ -1,5 +1,5 @@
-from xmlrpc.client import boolean
 import pygame as pg
+import sys
 
 pg.init()
 
@@ -13,8 +13,8 @@ game_over = False
 x = 300
 y = 400
 
-velocidad_x = 1
-velocidad_y = 1
+velocidad_x = 0.5
+velocidad_y = 0.5
 
 radio = 10
 
@@ -24,6 +24,9 @@ while not game_over:
     for evento in eventos:
         if evento.type == pg.QUIT:
             game_over = True
+        if evento.type == pg.KEYDOWN and evento.key == pg.K_ESCAPE:
+            pg.quit()
+            sys.exit()
 
     # Modificar los objetos del juego
     x += velocidad_x
@@ -34,12 +37,12 @@ while not game_over:
     if y >= largo - radio or y <= radio:
         velocidad_y *= -1
 
-    # Aqui no hay nada que hacer
-
-    # Refrescar la pantalla
+    #Colocar color a la pantalla
     pantalla.fill((255, 0, 0))
+    # Dibujar la bola
     bola = pg.draw.circle(pantalla, (255, 255, 0), (x, y), radio)
 
+    # Refrescar la pantalla
     pg.display.flip()
 
 pg.quit()
